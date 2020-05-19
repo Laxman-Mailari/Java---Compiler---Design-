@@ -20,5 +20,5 @@ we have done these in 5 phases
 Execution:
 all the phases execution is explained in respective folder read.md
 
-project done by Laxman M
+project is done by Laxman M,prithvi v
 
