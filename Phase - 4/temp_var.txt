@@ -1,0 +1,8 @@
+res T11
+a T8
+mul T6
+cse T4
+T2 T5
+div T3
+sub T2
+add T1

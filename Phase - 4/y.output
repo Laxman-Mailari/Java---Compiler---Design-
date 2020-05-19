@@ -1,0 +1,310 @@
+Terminals which are not used
+
+   T_LOR
+   T_LAND
+   T_DEQL
+   T_NEQL
+
+
+Grammar
+
+    0 $accept: start $end
+
+    1 start: STATEMENTS
+
+    2 STATEMENTS: STATEMENT
+    3           | STATEMENT STATEMENTS
+
+    4 STATEMENT: T_ID T_EQL T_ID Operator T_ID
+    5          | T_ID T_EQL T_ID Operator T_NUM
+    6          | T_ID T_EQL T_NUM Operator T_ID
+    7          | T_IF T_ID T_GOTO T_ID
+    8          | T_GOTO T_ID
+    9          | T_ID T_COLON
+
+   10 Operator: T_ADD
+   11         | T_SUB
+   12         | T_MUL
+   13         | T_DIV
+   14         | T_EQL
+   15         | T_LT
+   16         | T_GT
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+T_NUM (258) 5 6
+T_ID (259) 4 5 6 7 8 9
+T_LOR (260)
+T_LAND (261)
+T_DEQL (262)
+T_NEQL (263)
+T_COLON (264) 9
+T_SUB (265) 11
+T_ADD (266) 10
+T_MUL (267) 12
+T_DIV (268) 13
+T_LT (269) 15
+T_GT (270) 16
+T_EQL (271) 4 5 6 14
+T_GOTO (272) 7 8
+T_IF (273) 7
+
+
+Nonterminals, with rules where they appear
+
+$accept (19)
+    on left: 0
+start (20)
+    on left: 1, on right: 0
+STATEMENTS (21)
+    on left: 2 3, on right: 1 3
+STATEMENT (22)
+    on left: 4 5 6 7 8 9, on right: 2 3
+Operator (23)
+    on left: 10 11 12 13 14 15 16, on right: 4 5 6
+
+
+state 0
+
+    0 $accept: . start $end
+
+    T_ID    shift, and go to state 1
+    T_GOTO  shift, and go to state 2
+    T_IF    shift, and go to state 3
+
+    start       go to state 4
+    STATEMENTS  go to state 5
+    STATEMENT   go to state 6
+
+
+state 1
+
+    4 STATEMENT: T_ID . T_EQL T_ID Operator T_ID
+    5          | T_ID . T_EQL T_ID Operator T_NUM
+    6          | T_ID . T_EQL T_NUM Operator T_ID
+    9          | T_ID . T_COLON
+
+    T_COLON  shift, and go to state 7
+    T_EQL    shift, and go to state 8
+
+
+state 2
+
+    8 STATEMENT: T_GOTO . T_ID
+
+    T_ID  shift, and go to state 9
+
+
+state 3
+
+    7 STATEMENT: T_IF . T_ID T_GOTO T_ID
+
+    T_ID  shift, and go to state 10
+
+
+state 4
+
+    0 $accept: start . $end
+
+    $end  shift, and go to state 11
+
+
+state 5
+
+    1 start: STATEMENTS .
+
+    $default  reduce using rule 1 (start)
+
+
+state 6
+
+    2 STATEMENTS: STATEMENT .
+    3           | STATEMENT . STATEMENTS
+
+    T_ID    shift, and go to state 1
+    T_GOTO  shift, and go to state 2
+    T_IF    shift, and go to state 3
+
+    $default  reduce using rule 2 (STATEMENTS)
+
+    STATEMENTS  go to state 12
+    STATEMENT   go to state 6
+
+
+state 7
+
+    9 STATEMENT: T_ID T_COLON .
+
+    $default  reduce using rule 9 (STATEMENT)
+
+
+state 8
+
+    4 STATEMENT: T_ID T_EQL . T_ID Operator T_ID
+    5          | T_ID T_EQL . T_ID Operator T_NUM
+    6          | T_ID T_EQL . T_NUM Operator T_ID
+
+    T_NUM  shift, and go to state 13
+    T_ID   shift, and go to state 14
+
+
+state 9
+
+    8 STATEMENT: T_GOTO T_ID .
+
+    $default  reduce using rule 8 (STATEMENT)
+
+
+state 10
+
+    7 STATEMENT: T_IF T_ID . T_GOTO T_ID
+
+    T_GOTO  shift, and go to state 15
+
+
+state 11
+
+    0 $accept: start $end .
+
+    $default  accept
+
+
+state 12
+
+    3 STATEMENTS: STATEMENT STATEMENTS .
+
+    $default  reduce using rule 3 (STATEMENTS)
+
+
+state 13
+
+    6 STATEMENT: T_ID T_EQL T_NUM . Operator T_ID
+
+    T_SUB  shift, and go to state 16
+    T_ADD  shift, and go to state 17
+    T_MUL  shift, and go to state 18
+    T_DIV  shift, and go to state 19
+    T_LT   shift, and go to state 20
+    T_GT   shift, and go to state 21
+    T_EQL  shift, and go to state 22
+
+    Operator  go to state 23
+
+
+state 14
+
+    4 STATEMENT: T_ID T_EQL T_ID . Operator T_ID
+    5          | T_ID T_EQL T_ID . Operator T_NUM
+
+    T_SUB  shift, and go to state 16
+    T_ADD  shift, and go to state 17
+    T_MUL  shift, and go to state 18
+    T_DIV  shift, and go to state 19
+    T_LT   shift, and go to state 20
+    T_GT   shift, and go to state 21
+    T_EQL  shift, and go to state 22
+
+    Operator  go to state 24
+
+
+state 15
+
+    7 STATEMENT: T_IF T_ID T_GOTO . T_ID
+
+    T_ID  shift, and go to state 25
+
+
+state 16
+
+   11 Operator: T_SUB .
+
+    $default  reduce using rule 11 (Operator)
+
+
+state 17
+
+   10 Operator: T_ADD .
+
+    $default  reduce using rule 10 (Operator)
+
+
+state 18
+
+   12 Operator: T_MUL .
+
+    $default  reduce using rule 12 (Operator)
+
+
+state 19
+
+   13 Operator: T_DIV .
+
+    $default  reduce using rule 13 (Operator)
+
+
+state 20
+
+   15 Operator: T_LT .
+
+    $default  reduce using rule 15 (Operator)
+
+
+state 21
+
+   16 Operator: T_GT .
+
+    $default  reduce using rule 16 (Operator)
+
+
+state 22
+
+   14 Operator: T_EQL .
+
+    $default  reduce using rule 14 (Operator)
+
+
+state 23
+
+    6 STATEMENT: T_ID T_EQL T_NUM Operator . T_ID
+
+    T_ID  shift, and go to state 26
+
+
+state 24
+
+    4 STATEMENT: T_ID T_EQL T_ID Operator . T_ID
+    5          | T_ID T_EQL T_ID Operator . T_NUM
+
+    T_NUM  shift, and go to state 27
+    T_ID   shift, and go to state 28
+
+
+state 25
+
+    7 STATEMENT: T_IF T_ID T_GOTO T_ID .
+
+    $default  reduce using rule 7 (STATEMENT)
+
+
+state 26
+
+    6 STATEMENT: T_ID T_EQL T_NUM Operator T_ID .
+
+    $default  reduce using rule 6 (STATEMENT)
+
+
+state 27
+
+    5 STATEMENT: T_ID T_EQL T_ID Operator T_NUM .
+
+    $default  reduce using rule 5 (STATEMENT)
+
+
+state 28
+
+    4 STATEMENT: T_ID T_EQL T_ID Operator T_ID .
+
+    $default  reduce using rule 4 (STATEMENT)

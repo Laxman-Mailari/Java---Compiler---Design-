@@ -1,0 +1,30 @@
+a = 10
+T1 = a + b
+add = T1
+T2 = b - a
+sub = T2
+T3 = b / a
+div = T3
+T5 = b - a
+T4 = T5 + add
+cse = T4
+T6 = a * b
+mul = T6
+T7 = a < b
+if T7 goto L0
+goto L1
+L0:
+T8 = b + 30
+a = T8
+L1:
+
+i = 0
+L2: T9 = i < 10
+if T9 goto L3
+goto L4
+L3: T10 = i + 2
+i = T10
+T11 = temp + add
+res = T11
+goto L2
+L4:
