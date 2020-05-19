@@ -3,6 +3,7 @@ it is the phase - 3:  INTERMEDIATE CODE GENERATION(ICG)
 execution : 
 
 % make
+
 % ./a.out < input.txt     //it print the output in terminal itself
 
 or
