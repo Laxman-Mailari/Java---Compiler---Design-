@@ -1,0 +1,118 @@
+CompilationStart:
+	ImportDec CompilationStart
+	|Class_def
+	;
+
+ImportDec:
+	T_IMPORT  T_ID'.'T_ID'.' T_S_MULT ';'
+	;
+Class_def:
+  Modifier T_CLASS T_ID open ClassBody close
+;
+ClassBody:
+  GlobVarDec ClassBody
+  | MethodDec ClassBody
+  |
+  ;
+GlobVarDec:
+	Modifier VAR_DEC
+	;
+MethodDec:
+  Modifier T_VOID T_MAIN '('T_STR_ARG')'HANDLE
+  | Modifier TYPE T_ID'(' Params ')'HANDLE
+	| Modifier T_VOID T_ID'('Params ')'HANDLE
+	;
+
+Params:
+	ParamList
+	;
+
+ParamList:
+	TYPE T_ID
+	|TYPE T_ID',' Params
+	|
+	;
+
+Modifier:
+  T_PUBLIC Modifier1
+  | Modifier1
+  ;
+Modifier1:
+  T_STATIC Modifier1
+  |
+  ;
+
+TYPE:
+    T_BOOL
+    | T_BYTE
+    | T_CHAR
+    | T_SHORT
+    | T_INT
+    | T_LONG
+    | T_FLOAT
+    | T_DOUBLE
+    ;
+
+STATEMENTS:
+  STATEMENT
+  | STATEMENTS STATEMENT
+  ;
+
+STATEMENT:
+  T_ID T_ASSG E ';'
+  | VAR_DEC
+  | T_IF '(' BOOL ')' HANDLE
+  | T_IF '(' BOOL ')' open STATEMENTS close T_ELSE open STATEMENTS close  
+  | T_WHILE '(' BOOL ')' HANDLE
+;
+
+
+
+VAR_DEC:
+ TYPE T_ID  T_ASSG E DecIdenList ';'
+  | TYPE T_ID DecIdenList ';'
+  ;
+
+DecIdenList:
+	','T_ID T_ASSG E DecIdenList
+    | ','T_ID DecIdenList
+    |
+	;
+
+E: E T_S_PLUS T
+  | E T_S_MINUS T {
+  | T {$$ = $1;}
+  ;
+
+T: T T_S_MULT F
+  | T T_S_DIV F
+  | F {$$ = $1;}
+  ;
+
+F: T_ID
+  | T_NUM
+  | T_STRVAL
+  | T_FNUM
+;
+
+BOOL:
+  E T_LOR E 
+  | E T_LAND E
+  | E T_GE E
+  | E T_LE E
+  | E T_GEQ E
+  | E T_LEQ E
+  | E T_NE E
+  | E T_S_EQ E
+  ;
+  
+open:
+  T_OFB {temp_scope++;push(stack_arr,temp_scope);scope=peek(stack_arr);}
+  ;
+
+close:
+  T_CFB {pop(stack_arr);scope=peek(stack_arr);}
+  ;
+
+HANDLE:
+  open STATEMENTS close ;
