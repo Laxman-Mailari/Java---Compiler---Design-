@@ -1,0 +1,1357 @@
+Terminals which are not used
+
+   T_PRIVATE
+   T_PROTECTED
+   T_NEW
+   T_RETURN
+   T_BREAK
+   T_BYTE
+   T_LONG
+   T_DOUBLE
+   T_STRVAL
+   T_NOT
+   T_STR
+   T_STDOUT
+   T_FOR
+   T_DO
+   T_TRUE
+   T_FALSE
+   T_U_INCR
+   T_U_DECR
+   T_S_PLUSEQ
+   T_S_MINUSEQ
+   T_S_MULTEQ
+   T_S_DIVEQ
+   S_DIV
+   T_
+
+
+Grammar
+
+    0 $accept: CompilationStart $end
+
+    1 CompilationStart: ImportDec CompilationStart
+    2                 | Class_def
+
+    3 ImportDec: T_IMPORT T_ID '.' T_ID '.' T_S_MULT ';'
+
+    4 Class_def: Modifier T_CLASS T_ID open ClassBody close
+
+    5 ClassBody: GlobVarDec ClassBody
+    6          | MethodDec ClassBody
+    7          | /* empty */
+
+    8 GlobVarDec: Modifier VAR_DEC
+
+    9 MethodDec: Modifier T_VOID T_MAIN '(' T_STR_ARG ')' HANDLE
+   10          | Modifier TYPE T_ID '(' Params ')' HANDLE
+   11          | Modifier T_VOID T_ID '(' Params ')' HANDLE
+
+   12 Params: ParamList
+
+   13 ParamList: TYPE T_ID
+   14          | TYPE T_ID ',' Params
+   15          | /* empty */
+
+   16 Modifier: T_PUBLIC Modifier1
+   17         | Modifier1
+
+   18 Modifier1: T_STATIC Modifier1
+   19          | /* empty */
+
+   20 TYPE: T_BOOL
+   21     | T_CHAR
+   22     | T_SHORT
+   23     | T_INT
+   24     | T_FLOAT
+
+   25 STATEMENTS: STATEMENT
+   26           | STATEMENTS STATEMENT
+
+   27 STATEMENT: T_ID T_ASSG E ';'
+   28          | VAR_DEC
+   29          | T_IF '(' BOOL ')' HANDLE
+   30          | T_IF '(' BOOL ')' HANDLE T_ELSE HANDLE
+   31          | T_WHILE '(' BOOL ')' HANDLE
+
+   32 VAR_DEC: TYPE T_ID T_ASSG E ';'
+   33        | TYPE T_ID ';'
+
+   34 E: E T_S_PLUS T
+   35  | E T_S_MINUS T
+   36  | T
+
+   37 T: T T_S_MULT F
+   38  | T T_S_DIV F
+   39  | F
+
+   40 F: T_ID
+   41  | T_NUM
+
+   42 BOOL: E T_LOR E
+   43     | E T_LAND E
+   44     | E T_GE E
+   45     | E T_LE E
+   46     | E T_GEQ E
+   47     | E T_LEQ E
+   48     | E T_NE E
+   49     | E T_S_EQ E
+
+   50 open: T_OFB
+
+   51 close: T_CFB
+
+   52 HANDLE: open STATEMENTS close
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 9 10 11 29 30 31
+')' (41) 9 10 11 29 30 31
+',' (44) 14
+'.' (46) 3
+';' (59) 3 27 32 33
+error (256)
+T_NUM (258) 41
+T_ID (259) 3 4 10 11 13 14 27 32 33 40
+T_IMPORT (260) 3
+T_CLASS (261) 4
+T_PUBLIC (262) 16
+T_PRIVATE (263)
+T_PROTECTED (264)
+T_STATIC (265) 18
+T_VOID (266) 9 11
+T_MAIN (267) 9
+T_NEW (268)
+T_RETURN (269)
+T_BREAK (270)
+T_BOOL (271) 20
+T_SHORT (272) 22
+T_BYTE (273)
+T_CHAR (274) 21
+T_INT (275) 23
+T_FLOAT (276) 24
+T_LONG (277)
+T_DOUBLE (278)
+T_STRVAL (279)
+T_LOR (280) 42
+T_LAND (281) 43
+T_NOT (282)
+T_STR_ARG (283) 9
+T_STR (284)
+T_STDOUT (285)
+T_IF (286) 29 30
+T_ELSE (287) 30
+T_WHILE (288) 31
+T_FOR (289)
+T_DO (290)
+T_TRUE (291)
+T_FALSE (292)
+T_U_INCR (293)
+T_U_DECR (294)
+T_OFB (295) 50
+T_CFB (296) 51
+T_S_PLUSEQ (297)
+T_S_MINUSEQ (298)
+T_S_MULTEQ (299)
+T_S_DIVEQ (300)
+T_S_DIV (301) 38
+T_S_EQ (302) 49
+S_DIV (303)
+T_ (304)
+T_S_MULT (305) 3 37
+T_S_MINUS (306) 35
+T_S_PLUS (307) 34
+T_NE (308) 48
+T_ASSG (309) 27 32
+T_GE (310) 44
+T_LE (311) 45
+T_LEQ (312) 47
+T_GEQ (313) 46
+
+
+Nonterminals, with rules where they appear
+
+$accept (64)
+    on left: 0
+CompilationStart (65)
+    on left: 1 2, on right: 0 1
+ImportDec (66)
+    on left: 3, on right: 1
+Class_def (67)
+    on left: 4, on right: 2
+ClassBody (68)
+    on left: 5 6 7, on right: 4 5 6
+GlobVarDec (69)
+    on left: 8, on right: 5
+MethodDec (70)
+    on left: 9 10 11, on right: 6
+Params (71)
+    on left: 12, on right: 10 11 14
+ParamList (72)
+    on left: 13 14 15, on right: 12
+Modifier (73)
+    on left: 16 17, on right: 4 8 9 10 11
+Modifier1 (74)
+    on left: 18 19, on right: 16 17 18
+TYPE (75)
+    on left: 20 21 22 23 24, on right: 10 13 14 32 33
+STATEMENTS (76)
+    on left: 25 26, on right: 26 52
+STATEMENT (77)
+    on left: 27 28 29 30 31, on right: 25 26
+VAR_DEC (78)
+    on left: 32 33, on right: 8 28
+E (79)
+    on left: 34 35 36, on right: 27 32 34 35 42 43 44 45 46 47 48 49
+T (80)
+    on left: 37 38 39, on right: 34 35 36 37 38
+F (81)
+    on left: 40 41, on right: 37 38 39
+BOOL (82)
+    on left: 42 43 44 45 46 47 48 49, on right: 29 30 31
+open (83)
+    on left: 50, on right: 4 52
+close (84)
+    on left: 51, on right: 4 52
+HANDLE (85)
+    on left: 52, on right: 9 10 11 29 30 31
+
+
+state 0
+
+    0 $accept: . CompilationStart $end
+
+    T_IMPORT  shift, and go to state 1
+    T_PUBLIC  shift, and go to state 2
+    T_STATIC  shift, and go to state 3
+
+    $default  reduce using rule 19 (Modifier1)
+
+    CompilationStart  go to state 4
+    ImportDec         go to state 5
+    Class_def         go to state 6
+    Modifier          go to state 7
+    Modifier1         go to state 8
+
+
+state 1
+
+    3 ImportDec: T_IMPORT . T_ID '.' T_ID '.' T_S_MULT ';'
+
+    T_ID  shift, and go to state 9
+
+
+state 2
+
+   16 Modifier: T_PUBLIC . Modifier1
+
+    T_STATIC  shift, and go to state 3
+
+    $default  reduce using rule 19 (Modifier1)
+
+    Modifier1  go to state 10
+
+
+state 3
+
+   18 Modifier1: T_STATIC . Modifier1
+
+    T_STATIC  shift, and go to state 3
+
+    $default  reduce using rule 19 (Modifier1)
+
+    Modifier1  go to state 11
+
+
+state 4
+
+    0 $accept: CompilationStart . $end
+
+    $end  shift, and go to state 12
+
+
+state 5
+
+    1 CompilationStart: ImportDec . CompilationStart
+
+    T_IMPORT  shift, and go to state 1
+    T_PUBLIC  shift, and go to state 2
+    T_STATIC  shift, and go to state 3
+
+    $default  reduce using rule 19 (Modifier1)
+
+    CompilationStart  go to state 13
+    ImportDec         go to state 5
+    Class_def         go to state 6
+    Modifier          go to state 7
+    Modifier1         go to state 8
+
+
+state 6
+
+    2 CompilationStart: Class_def .
+
+    $default  reduce using rule 2 (CompilationStart)
+
+
+state 7
+
+    4 Class_def: Modifier . T_CLASS T_ID open ClassBody close
+
+    T_CLASS  shift, and go to state 14
+
+
+state 8
+
+   17 Modifier: Modifier1 .
+
+    $default  reduce using rule 17 (Modifier)
+
+
+state 9
+
+    3 ImportDec: T_IMPORT T_ID . '.' T_ID '.' T_S_MULT ';'
+
+    '.'  shift, and go to state 15
+
+
+state 10
+
+   16 Modifier: T_PUBLIC Modifier1 .
+
+    $default  reduce using rule 16 (Modifier)
+
+
+state 11
+
+   18 Modifier1: T_STATIC Modifier1 .
+
+    $default  reduce using rule 18 (Modifier1)
+
+
+state 12
+
+    0 $accept: CompilationStart $end .
+
+    $default  accept
+
+
+state 13
+
+    1 CompilationStart: ImportDec CompilationStart .
+
+    $default  reduce using rule 1 (CompilationStart)
+
+
+state 14
+
+    4 Class_def: Modifier T_CLASS . T_ID open ClassBody close
+
+    T_ID  shift, and go to state 16
+
+
+state 15
+
+    3 ImportDec: T_IMPORT T_ID '.' . T_ID '.' T_S_MULT ';'
+
+    T_ID  shift, and go to state 17
+
+
+state 16
+
+    4 Class_def: Modifier T_CLASS T_ID . open ClassBody close
+
+    T_OFB  shift, and go to state 18
+
+    open  go to state 19
+
+
+state 17
+
+    3 ImportDec: T_IMPORT T_ID '.' T_ID . '.' T_S_MULT ';'
+
+    '.'  shift, and go to state 20
+
+
+state 18
+
+   50 open: T_OFB .
+
+    $default  reduce using rule 50 (open)
+
+
+state 19
+
+    4 Class_def: Modifier T_CLASS T_ID open . ClassBody close
+
+    T_PUBLIC  shift, and go to state 2
+    T_STATIC  shift, and go to state 3
+
+    T_CFB     reduce using rule 7 (ClassBody)
+    $default  reduce using rule 19 (Modifier1)
+
+    ClassBody   go to state 21
+    GlobVarDec  go to state 22
+    MethodDec   go to state 23
+    Modifier    go to state 24
+    Modifier1   go to state 8
+
+
+state 20
+
+    3 ImportDec: T_IMPORT T_ID '.' T_ID '.' . T_S_MULT ';'
+
+    T_S_MULT  shift, and go to state 25
+
+
+state 21
+
+    4 Class_def: Modifier T_CLASS T_ID open ClassBody . close
+
+    T_CFB  shift, and go to state 26
+
+    close  go to state 27
+
+
+state 22
+
+    5 ClassBody: GlobVarDec . ClassBody
+
+    T_PUBLIC  shift, and go to state 2
+    T_STATIC  shift, and go to state 3
+
+    T_CFB     reduce using rule 7 (ClassBody)
+    $default  reduce using rule 19 (Modifier1)
+
+    ClassBody   go to state 28
+    GlobVarDec  go to state 22
+    MethodDec   go to state 23
+    Modifier    go to state 24
+    Modifier1   go to state 8
+
+
+state 23
+
+    6 ClassBody: MethodDec . ClassBody
+
+    T_PUBLIC  shift, and go to state 2
+    T_STATIC  shift, and go to state 3
+
+    T_CFB     reduce using rule 7 (ClassBody)
+    $default  reduce using rule 19 (Modifier1)
+
+    ClassBody   go to state 29
+    GlobVarDec  go to state 22
+    MethodDec   go to state 23
+    Modifier    go to state 24
+    Modifier1   go to state 8
+
+
+state 24
+
+    8 GlobVarDec: Modifier . VAR_DEC
+    9 MethodDec: Modifier . T_VOID T_MAIN '(' T_STR_ARG ')' HANDLE
+   10          | Modifier . TYPE T_ID '(' Params ')' HANDLE
+   11          | Modifier . T_VOID T_ID '(' Params ')' HANDLE
+
+    T_VOID   shift, and go to state 30
+    T_BOOL   shift, and go to state 31
+    T_SHORT  shift, and go to state 32
+    T_CHAR   shift, and go to state 33
+    T_INT    shift, and go to state 34
+    T_FLOAT  shift, and go to state 35
+
+    TYPE     go to state 36
+    VAR_DEC  go to state 37
+
+
+state 25
+
+    3 ImportDec: T_IMPORT T_ID '.' T_ID '.' T_S_MULT . ';'
+
+    ';'  shift, and go to state 38
+
+
+state 26
+
+   51 close: T_CFB .
+
+    $default  reduce using rule 51 (close)
+
+
+state 27
+
+    4 Class_def: Modifier T_CLASS T_ID open ClassBody close .
+
+    $default  reduce using rule 4 (Class_def)
+
+
+state 28
+
+    5 ClassBody: GlobVarDec ClassBody .
+
+    $default  reduce using rule 5 (ClassBody)
+
+
+state 29
+
+    6 ClassBody: MethodDec ClassBody .
+
+    $default  reduce using rule 6 (ClassBody)
+
+
+state 30
+
+    9 MethodDec: Modifier T_VOID . T_MAIN '(' T_STR_ARG ')' HANDLE
+   11          | Modifier T_VOID . T_ID '(' Params ')' HANDLE
+
+    T_ID    shift, and go to state 39
+    T_MAIN  shift, and go to state 40
+
+
+state 31
+
+   20 TYPE: T_BOOL .
+
+    $default  reduce using rule 20 (TYPE)
+
+
+state 32
+
+   22 TYPE: T_SHORT .
+
+    $default  reduce using rule 22 (TYPE)
+
+
+state 33
+
+   21 TYPE: T_CHAR .
+
+    $default  reduce using rule 21 (TYPE)
+
+
+state 34
+
+   23 TYPE: T_INT .
+
+    $default  reduce using rule 23 (TYPE)
+
+
+state 35
+
+   24 TYPE: T_FLOAT .
+
+    $default  reduce using rule 24 (TYPE)
+
+
+state 36
+
+   10 MethodDec: Modifier TYPE . T_ID '(' Params ')' HANDLE
+   32 VAR_DEC: TYPE . T_ID T_ASSG E ';'
+   33        | TYPE . T_ID ';'
+
+    T_ID  shift, and go to state 41
+
+
+state 37
+
+    8 GlobVarDec: Modifier VAR_DEC .
+
+    $default  reduce using rule 8 (GlobVarDec)
+
+
+state 38
+
+    3 ImportDec: T_IMPORT T_ID '.' T_ID '.' T_S_MULT ';' .
+
+    $default  reduce using rule 3 (ImportDec)
+
+
+state 39
+
+   11 MethodDec: Modifier T_VOID T_ID . '(' Params ')' HANDLE
+
+    '('  shift, and go to state 42
+
+
+state 40
+
+    9 MethodDec: Modifier T_VOID T_MAIN . '(' T_STR_ARG ')' HANDLE
+
+    '('  shift, and go to state 43
+
+
+state 41
+
+   10 MethodDec: Modifier TYPE T_ID . '(' Params ')' HANDLE
+   32 VAR_DEC: TYPE T_ID . T_ASSG E ';'
+   33        | TYPE T_ID . ';'
+
+    T_ASSG  shift, and go to state 44
+    ';'     shift, and go to state 45
+    '('     shift, and go to state 46
+
+
+state 42
+
+   11 MethodDec: Modifier T_VOID T_ID '(' . Params ')' HANDLE
+
+    T_BOOL   shift, and go to state 31
+    T_SHORT  shift, and go to state 32
+    T_CHAR   shift, and go to state 33
+    T_INT    shift, and go to state 34
+    T_FLOAT  shift, and go to state 35
+
+    $default  reduce using rule 15 (ParamList)
+
+    Params     go to state 47
+    ParamList  go to state 48
+    TYPE       go to state 49
+
+
+state 43
+
+    9 MethodDec: Modifier T_VOID T_MAIN '(' . T_STR_ARG ')' HANDLE
+
+    T_STR_ARG  shift, and go to state 50
+
+
+state 44
+
+   32 VAR_DEC: TYPE T_ID T_ASSG . E ';'
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    E  go to state 53
+    T  go to state 54
+    F  go to state 55
+
+
+state 45
+
+   33 VAR_DEC: TYPE T_ID ';' .
+
+    $default  reduce using rule 33 (VAR_DEC)
+
+
+state 46
+
+   10 MethodDec: Modifier TYPE T_ID '(' . Params ')' HANDLE
+
+    T_BOOL   shift, and go to state 31
+    T_SHORT  shift, and go to state 32
+    T_CHAR   shift, and go to state 33
+    T_INT    shift, and go to state 34
+    T_FLOAT  shift, and go to state 35
+
+    $default  reduce using rule 15 (ParamList)
+
+    Params     go to state 56
+    ParamList  go to state 48
+    TYPE       go to state 49
+
+
+state 47
+
+   11 MethodDec: Modifier T_VOID T_ID '(' Params . ')' HANDLE
+
+    ')'  shift, and go to state 57
+
+
+state 48
+
+   12 Params: ParamList .
+
+    $default  reduce using rule 12 (Params)
+
+
+state 49
+
+   13 ParamList: TYPE . T_ID
+   14          | TYPE . T_ID ',' Params
+
+    T_ID  shift, and go to state 58
+
+
+state 50
+
+    9 MethodDec: Modifier T_VOID T_MAIN '(' T_STR_ARG . ')' HANDLE
+
+    ')'  shift, and go to state 59
+
+
+state 51
+
+   41 F: T_NUM .
+
+    $default  reduce using rule 41 (F)
+
+
+state 52
+
+   40 F: T_ID .
+
+    $default  reduce using rule 40 (F)
+
+
+state 53
+
+   32 VAR_DEC: TYPE T_ID T_ASSG E . ';'
+   34 E: E . T_S_PLUS T
+   35  | E . T_S_MINUS T
+
+    T_S_MINUS  shift, and go to state 60
+    T_S_PLUS   shift, and go to state 61
+    ';'        shift, and go to state 62
+
+
+state 54
+
+   36 E: T .
+   37 T: T . T_S_MULT F
+   38  | T . T_S_DIV F
+
+    T_S_DIV   shift, and go to state 63
+    T_S_MULT  shift, and go to state 64
+
+    $default  reduce using rule 36 (E)
+
+
+state 55
+
+   39 T: F .
+
+    $default  reduce using rule 39 (T)
+
+
+state 56
+
+   10 MethodDec: Modifier TYPE T_ID '(' Params . ')' HANDLE
+
+    ')'  shift, and go to state 65
+
+
+state 57
+
+   11 MethodDec: Modifier T_VOID T_ID '(' Params ')' . HANDLE
+
+    T_OFB  shift, and go to state 18
+
+    open    go to state 66
+    HANDLE  go to state 67
+
+
+state 58
+
+   13 ParamList: TYPE T_ID .
+   14          | TYPE T_ID . ',' Params
+
+    ','  shift, and go to state 68
+
+    $default  reduce using rule 13 (ParamList)
+
+
+state 59
+
+    9 MethodDec: Modifier T_VOID T_MAIN '(' T_STR_ARG ')' . HANDLE
+
+    T_OFB  shift, and go to state 18
+
+    open    go to state 66
+    HANDLE  go to state 69
+
+
+state 60
+
+   35 E: E T_S_MINUS . T
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    T  go to state 70
+    F  go to state 55
+
+
+state 61
+
+   34 E: E T_S_PLUS . T
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    T  go to state 71
+    F  go to state 55
+
+
+state 62
+
+   32 VAR_DEC: TYPE T_ID T_ASSG E ';' .
+
+    $default  reduce using rule 32 (VAR_DEC)
+
+
+state 63
+
+   38 T: T T_S_DIV . F
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    F  go to state 72
+
+
+state 64
+
+   37 T: T T_S_MULT . F
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    F  go to state 73
+
+
+state 65
+
+   10 MethodDec: Modifier TYPE T_ID '(' Params ')' . HANDLE
+
+    T_OFB  shift, and go to state 18
+
+    open    go to state 66
+    HANDLE  go to state 74
+
+
+state 66
+
+   52 HANDLE: open . STATEMENTS close
+
+    T_ID     shift, and go to state 75
+    T_BOOL   shift, and go to state 31
+    T_SHORT  shift, and go to state 32
+    T_CHAR   shift, and go to state 33
+    T_INT    shift, and go to state 34
+    T_FLOAT  shift, and go to state 35
+    T_IF     shift, and go to state 76
+    T_WHILE  shift, and go to state 77
+
+    TYPE        go to state 78
+    STATEMENTS  go to state 79
+    STATEMENT   go to state 80
+    VAR_DEC     go to state 81
+
+
+state 67
+
+   11 MethodDec: Modifier T_VOID T_ID '(' Params ')' HANDLE .
+
+    $default  reduce using rule 11 (MethodDec)
+
+
+state 68
+
+   14 ParamList: TYPE T_ID ',' . Params
+
+    T_BOOL   shift, and go to state 31
+    T_SHORT  shift, and go to state 32
+    T_CHAR   shift, and go to state 33
+    T_INT    shift, and go to state 34
+    T_FLOAT  shift, and go to state 35
+
+    $default  reduce using rule 15 (ParamList)
+
+    Params     go to state 82
+    ParamList  go to state 48
+    TYPE       go to state 49
+
+
+state 69
+
+    9 MethodDec: Modifier T_VOID T_MAIN '(' T_STR_ARG ')' HANDLE .
+
+    $default  reduce using rule 9 (MethodDec)
+
+
+state 70
+
+   35 E: E T_S_MINUS T .
+   37 T: T . T_S_MULT F
+   38  | T . T_S_DIV F
+
+    T_S_DIV   shift, and go to state 63
+    T_S_MULT  shift, and go to state 64
+
+    $default  reduce using rule 35 (E)
+
+
+state 71
+
+   34 E: E T_S_PLUS T .
+   37 T: T . T_S_MULT F
+   38  | T . T_S_DIV F
+
+    T_S_DIV   shift, and go to state 63
+    T_S_MULT  shift, and go to state 64
+
+    $default  reduce using rule 34 (E)
+
+
+state 72
+
+   38 T: T T_S_DIV F .
+
+    $default  reduce using rule 38 (T)
+
+
+state 73
+
+   37 T: T T_S_MULT F .
+
+    $default  reduce using rule 37 (T)
+
+
+state 74
+
+   10 MethodDec: Modifier TYPE T_ID '(' Params ')' HANDLE .
+
+    $default  reduce using rule 10 (MethodDec)
+
+
+state 75
+
+   27 STATEMENT: T_ID . T_ASSG E ';'
+
+    T_ASSG  shift, and go to state 83
+
+
+state 76
+
+   29 STATEMENT: T_IF . '(' BOOL ')' HANDLE
+   30          | T_IF . '(' BOOL ')' HANDLE T_ELSE HANDLE
+
+    '('  shift, and go to state 84
+
+
+state 77
+
+   31 STATEMENT: T_WHILE . '(' BOOL ')' HANDLE
+
+    '('  shift, and go to state 85
+
+
+state 78
+
+   32 VAR_DEC: TYPE . T_ID T_ASSG E ';'
+   33        | TYPE . T_ID ';'
+
+    T_ID  shift, and go to state 86
+
+
+state 79
+
+   26 STATEMENTS: STATEMENTS . STATEMENT
+   52 HANDLE: open STATEMENTS . close
+
+    T_ID     shift, and go to state 75
+    T_BOOL   shift, and go to state 31
+    T_SHORT  shift, and go to state 32
+    T_CHAR   shift, and go to state 33
+    T_INT    shift, and go to state 34
+    T_FLOAT  shift, and go to state 35
+    T_IF     shift, and go to state 76
+    T_WHILE  shift, and go to state 77
+    T_CFB    shift, and go to state 26
+
+    TYPE       go to state 78
+    STATEMENT  go to state 87
+    VAR_DEC    go to state 81
+    close      go to state 88
+
+
+state 80
+
+   25 STATEMENTS: STATEMENT .
+
+    $default  reduce using rule 25 (STATEMENTS)
+
+
+state 81
+
+   28 STATEMENT: VAR_DEC .
+
+    $default  reduce using rule 28 (STATEMENT)
+
+
+state 82
+
+   14 ParamList: TYPE T_ID ',' Params .
+
+    $default  reduce using rule 14 (ParamList)
+
+
+state 83
+
+   27 STATEMENT: T_ID T_ASSG . E ';'
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    E  go to state 89
+    T  go to state 54
+    F  go to state 55
+
+
+state 84
+
+   29 STATEMENT: T_IF '(' . BOOL ')' HANDLE
+   30          | T_IF '(' . BOOL ')' HANDLE T_ELSE HANDLE
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    E     go to state 90
+    T     go to state 54
+    F     go to state 55
+    BOOL  go to state 91
+
+
+state 85
+
+   31 STATEMENT: T_WHILE '(' . BOOL ')' HANDLE
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    E     go to state 90
+    T     go to state 54
+    F     go to state 55
+    BOOL  go to state 92
+
+
+state 86
+
+   32 VAR_DEC: TYPE T_ID . T_ASSG E ';'
+   33        | TYPE T_ID . ';'
+
+    T_ASSG  shift, and go to state 44
+    ';'     shift, and go to state 45
+
+
+state 87
+
+   26 STATEMENTS: STATEMENTS STATEMENT .
+
+    $default  reduce using rule 26 (STATEMENTS)
+
+
+state 88
+
+   52 HANDLE: open STATEMENTS close .
+
+    $default  reduce using rule 52 (HANDLE)
+
+
+state 89
+
+   27 STATEMENT: T_ID T_ASSG E . ';'
+   34 E: E . T_S_PLUS T
+   35  | E . T_S_MINUS T
+
+    T_S_MINUS  shift, and go to state 60
+    T_S_PLUS   shift, and go to state 61
+    ';'        shift, and go to state 93
+
+
+state 90
+
+   34 E: E . T_S_PLUS T
+   35  | E . T_S_MINUS T
+   42 BOOL: E . T_LOR E
+   43     | E . T_LAND E
+   44     | E . T_GE E
+   45     | E . T_LE E
+   46     | E . T_GEQ E
+   47     | E . T_LEQ E
+   48     | E . T_NE E
+   49     | E . T_S_EQ E
+
+    T_LOR      shift, and go to state 94
+    T_LAND     shift, and go to state 95
+    T_S_EQ     shift, and go to state 96
+    T_S_MINUS  shift, and go to state 60
+    T_S_PLUS   shift, and go to state 61
+    T_NE       shift, and go to state 97
+    T_GE       shift, and go to state 98
+    T_LE       shift, and go to state 99
+    T_LEQ      shift, and go to state 100
+    T_GEQ      shift, and go to state 101
+
+
+state 91
+
+   29 STATEMENT: T_IF '(' BOOL . ')' HANDLE
+   30          | T_IF '(' BOOL . ')' HANDLE T_ELSE HANDLE
+
+    ')'  shift, and go to state 102
+
+
+state 92
+
+   31 STATEMENT: T_WHILE '(' BOOL . ')' HANDLE
+
+    ')'  shift, and go to state 103
+
+
+state 93
+
+   27 STATEMENT: T_ID T_ASSG E ';' .
+
+    $default  reduce using rule 27 (STATEMENT)
+
+
+state 94
+
+   42 BOOL: E T_LOR . E
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    E  go to state 104
+    T  go to state 54
+    F  go to state 55
+
+
+state 95
+
+   43 BOOL: E T_LAND . E
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    E  go to state 105
+    T  go to state 54
+    F  go to state 55
+
+
+state 96
+
+   49 BOOL: E T_S_EQ . E
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    E  go to state 106
+    T  go to state 54
+    F  go to state 55
+
+
+state 97
+
+   48 BOOL: E T_NE . E
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    E  go to state 107
+    T  go to state 54
+    F  go to state 55
+
+
+state 98
+
+   44 BOOL: E T_GE . E
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    E  go to state 108
+    T  go to state 54
+    F  go to state 55
+
+
+state 99
+
+   45 BOOL: E T_LE . E
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    E  go to state 109
+    T  go to state 54
+    F  go to state 55
+
+
+state 100
+
+   47 BOOL: E T_LEQ . E
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    E  go to state 110
+    T  go to state 54
+    F  go to state 55
+
+
+state 101
+
+   46 BOOL: E T_GEQ . E
+
+    T_NUM  shift, and go to state 51
+    T_ID   shift, and go to state 52
+
+    E  go to state 111
+    T  go to state 54
+    F  go to state 55
+
+
+state 102
+
+   29 STATEMENT: T_IF '(' BOOL ')' . HANDLE
+   30          | T_IF '(' BOOL ')' . HANDLE T_ELSE HANDLE
+
+    T_OFB  shift, and go to state 18
+
+    open    go to state 66
+    HANDLE  go to state 112
+
+
+state 103
+
+   31 STATEMENT: T_WHILE '(' BOOL ')' . HANDLE
+
+    T_OFB  shift, and go to state 18
+
+    open    go to state 66
+    HANDLE  go to state 113
+
+
+state 104
+
+   34 E: E . T_S_PLUS T
+   35  | E . T_S_MINUS T
+   42 BOOL: E T_LOR E .
+
+    T_S_MINUS  shift, and go to state 60
+    T_S_PLUS   shift, and go to state 61
+
+    $default  reduce using rule 42 (BOOL)
+
+
+state 105
+
+   34 E: E . T_S_PLUS T
+   35  | E . T_S_MINUS T
+   43 BOOL: E T_LAND E .
+
+    T_S_MINUS  shift, and go to state 60
+    T_S_PLUS   shift, and go to state 61
+
+    $default  reduce using rule 43 (BOOL)
+
+
+state 106
+
+   34 E: E . T_S_PLUS T
+   35  | E . T_S_MINUS T
+   49 BOOL: E T_S_EQ E .
+
+    T_S_MINUS  shift, and go to state 60
+    T_S_PLUS   shift, and go to state 61
+
+    $default  reduce using rule 49 (BOOL)
+
+
+state 107
+
+   34 E: E . T_S_PLUS T
+   35  | E . T_S_MINUS T
+   48 BOOL: E T_NE E .
+
+    T_S_MINUS  shift, and go to state 60
+    T_S_PLUS   shift, and go to state 61
+
+    $default  reduce using rule 48 (BOOL)
+
+
+state 108
+
+   34 E: E . T_S_PLUS T
+   35  | E . T_S_MINUS T
+   44 BOOL: E T_GE E .
+
+    T_S_MINUS  shift, and go to state 60
+    T_S_PLUS   shift, and go to state 61
+
+    $default  reduce using rule 44 (BOOL)
+
+
+state 109
+
+   34 E: E . T_S_PLUS T
+   35  | E . T_S_MINUS T
+   45 BOOL: E T_LE E .
+
+    T_S_MINUS  shift, and go to state 60
+    T_S_PLUS   shift, and go to state 61
+
+    $default  reduce using rule 45 (BOOL)
+
+
+state 110
+
+   34 E: E . T_S_PLUS T
+   35  | E . T_S_MINUS T
+   47 BOOL: E T_LEQ E .
+
+    T_S_MINUS  shift, and go to state 60
+    T_S_PLUS   shift, and go to state 61
+
+    $default  reduce using rule 47 (BOOL)
+
+
+state 111
+
+   34 E: E . T_S_PLUS T
+   35  | E . T_S_MINUS T
+   46 BOOL: E T_GEQ E .
+
+    T_S_MINUS  shift, and go to state 60
+    T_S_PLUS   shift, and go to state 61
+
+    $default  reduce using rule 46 (BOOL)
+
+
+state 112
+
+   29 STATEMENT: T_IF '(' BOOL ')' HANDLE .
+   30          | T_IF '(' BOOL ')' HANDLE . T_ELSE HANDLE
+
+    T_ELSE  shift, and go to state 114
+
+    $default  reduce using rule 29 (STATEMENT)
+
+
+state 113
+
+   31 STATEMENT: T_WHILE '(' BOOL ')' HANDLE .
+
+    $default  reduce using rule 31 (STATEMENT)
+
+
+state 114
+
+   30 STATEMENT: T_IF '(' BOOL ')' HANDLE T_ELSE . HANDLE
+
+    T_OFB  shift, and go to state 18
+
+    open    go to state 66
+    HANDLE  go to state 115
+
+
+state 115
+
+   30 STATEMENT: T_IF '(' BOOL ')' HANDLE T_ELSE HANDLE .
+
+    $default  reduce using rule 30 (STATEMENT)
