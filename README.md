@@ -1,7 +1,5 @@
 # Java-Compiler-using-c(using lex and yacc)
 
-Design a compiler for java using c language
-
 Compiler Design 
 1.lexical analysis
 2.syntax tree generation
@@ -14,7 +12,7 @@ we have done these in 5 phases
 1.symbol table generation - phase:1
 2.syntax tree generation - phase:2
 3.intermediate code generation - phase:3
-4. optimization - phase:4
+4.optimization - phase:4
 5.assembly code generation - phase:5
 
 Execution:
