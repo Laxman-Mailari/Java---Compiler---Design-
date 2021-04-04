@@ -1,6 +1,6 @@
 # Java-Compiler-using-c(using lex and yacc)
 
-### Compiler Design 
+### Compiler Design Steps
 - lexical analysis
 - syntax tree generation
 - semantic analysis
@@ -17,6 +17,4 @@
 
 ## Execution:
 all the phases execution is explained in respective folder read.md
-
-project is done by Laxman M,prithvi v
 
